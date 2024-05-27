@@ -1,26 +1,27 @@
 ﻿
-// CEEVFsysDlg.h: 头文件
+// englishStudyDlg.h: 头文件
 //
 
 #pragma once
-#include "back_end_sys.h"
+#include <CString>
 
-// CCEEVFsysDlg 对话框
-class CCEEVFsysDlg : public CDialogEx
+// CenglishStudyDlg 对话框
+class CenglishStudyDlg : public CDialogEx
 {
 // 构造
 public:
-	CCEEVFsysDlg(CWnd* pParent = nullptr);	// 标准构造函数
+	CenglishStudyDlg(CWnd* pParent = nullptr);	// 标准构造函数
 	_ConnectionPtr m_pCon;
 	_RecordsetPtr m_pRec;
 	_RecordsetPtr DBRecordSetGet(LPCTSTR Sql);
 	BOOL GetCollect(LPCTSTR Name, _variant_t& OutCol);
 
-	CString m_sno;//学号
-	CString m_pw;//密码
+	int m_id;
+	CString m_pwd;
+
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_CEEVFSYS_DIALOG };
+	enum { IDD = IDD_ENGLISHSTUDY_DIALOG };
 #endif
 
 	protected:
@@ -39,6 +40,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCancel();
-	afx_msg void OnEnChangeEditName();
+	afx_msg void OnEnChangeEdit1();
+	afx_msg void OnEnChangeEdit2();
 };

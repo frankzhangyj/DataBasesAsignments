@@ -1,14 +1,13 @@
 ﻿
-// CEEVFsysDlg.cpp: 实现文件
+// englishStudyDlg.cpp: 实现文件
 //
-#include "resource.h"
+
 #include "pch.h"
 #include "framework.h"
-#include "CEEVFsys.h"
-#include "CEEVFsysDlg.h"
+#include "englishStudy.h"
+#include "englishStudyDlg.h"
 #include "afxdialogex.h"
-#include "sys_admin.h"
-#include "sys_stu.h"
+#include "stu.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -48,34 +47,34 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CCEEVFsysDlg 对话框
+// CenglishStudyDlg 对话框
 
 
 
-CCEEVFsysDlg::CCEEVFsysDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_CEEVFSYS_DIALOG, pParent)
+CenglishStudyDlg::CenglishStudyDlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_ENGLISHSTUDY_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CCEEVFsysDlg::DoDataExchange(CDataExchange* pDX)
+void CenglishStudyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CCEEVFsysDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CenglishStudyDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDOK, &CCEEVFsysDlg::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &CCEEVFsysDlg::OnBnClickedCancel)
-	ON_EN_CHANGE(IDC_EDIT_NAME, &CCEEVFsysDlg::OnEnChangeEditName)
+	ON_BN_CLICKED(IDOK, &CenglishStudyDlg::OnBnClickedOk)
+	ON_EN_CHANGE(IDC_EDIT1, &CenglishStudyDlg::OnEnChangeEdit1)
+	ON_EN_CHANGE(IDC_EDIT2, &CenglishStudyDlg::OnEnChangeEdit2)
 END_MESSAGE_MAP()
 
 
-// CCEEVFsysDlg 消息处理程序
+// CenglishStudyDlg 消息处理程序
 
-BOOL CCEEVFsysDlg::OnInitDialog()
+BOOL CenglishStudyDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -109,7 +108,7 @@ BOOL CCEEVFsysDlg::OnInitDialog()
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
-void CCEEVFsysDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void CenglishStudyDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
@@ -126,7 +125,7 @@ void CCEEVFsysDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  来绘制该图标。  对于使用文档/视图模型的 MFC 应用程序，
 //  这将由框架自动完成。
 
-void CCEEVFsysDlg::OnPaint()
+void CenglishStudyDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -153,73 +152,12 @@ void CCEEVFsysDlg::OnPaint()
 
 //当用户拖动最小化窗口时系统调用此函数取得光标
 //显示。
-HCURSOR CCEEVFsysDlg::OnQueryDragIcon()
+HCURSOR CenglishStudyDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
-void CCEEVFsysDlg::OnBnClickedOk()
-{
-	// TODO: 在此添加控件通知处理程序代码
-
-	// TODO 为什么进入不了stu后台 和doModal有关？了解procedure 存储过程实现原理
-	GetDlgItemText(IDC_EDIT_NAME, m_sno);
-	GetDlgItemText(IDC_EDIT_PWD, m_pw);
-	int mode;
-
-	// 匹配帐号密码
-	CString sql1;
-	sql1.Format("exec Login '%s','%s'", m_sno, m_pw);//存储过程
-	m_pRec = DBRecordSetGet(sql1);
-
-	_variant_t var;
-	GetCollect("cnt", var);//cnt 与你创建的存储过程里的名称对应
-	int temp = var.intVal;
-
-	if (strlen(m_sno) < 1) {
-		MessageBox("请输入用户名！");
-		return;
-	}
-	if (strlen(m_pw) < 1) {
-		MessageBox("请输入密码！");
-		return;
-	}
-
-	if (temp == 0) {
-		MessageBox("帐号或密码错误!");
-		return;
-	}
-
-	// 找到用户模式
-	CString sql2;
-	sql2.Format("exec Find_mode '%s'", m_sno);
-	m_pRec = DBRecordSetGet(sql2);
-
-	GetCollect("mode", var);
-	mode = var.intVal;
-
-	if (temp == 1)
-	{
-		if (mode == 0) {
-			CDialogEx::OnOK();
-			sys_stu dlg;
-			dlg.m_pCon = m_pCon;
-			dlg.m_sno = m_sno;
-			dlg.DoModal();
-		}
-		else {
-			CDialogEx::OnOK();
-			sys_admin dlg;
-			dlg.m_pCon = m_pCon;
-			//dlg.m_sno = m_sno;
-			dlg.DoModal();
-		}
-	}		
-}
-
-_RecordsetPtr CCEEVFsysDlg::DBRecordSetGet(LPCTSTR Sql)
+_RecordsetPtr CenglishStudyDlg::DBRecordSetGet(LPCTSTR Sql)
 {
 	// TODO: 在此处添加实现代码.
 	m_pRec.CreateInstance("ADODB.Recordset");
@@ -228,7 +166,8 @@ _RecordsetPtr CCEEVFsysDlg::DBRecordSetGet(LPCTSTR Sql)
 	//return _RecordsetPtr();
 }
 
-BOOL CCEEVFsysDlg::GetCollect(LPCTSTR Name, _variant_t& OutCol)
+
+BOOL CenglishStudyDlg::GetCollect(LPCTSTR Name, _variant_t& OutCol)
 {
 	// TODO: 在此处添加实现代码
 	_variant_t vt;
@@ -242,14 +181,59 @@ BOOL CCEEVFsysDlg::GetCollect(LPCTSTR Name, _variant_t& OutCol)
 }
 
 
-void CCEEVFsysDlg::OnBnClickedCancel()
+
+void CenglishStudyDlg::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CDialogEx::OnCancel();
+	// CDialogEx::OnOK();
+	CString temp;
+	GetDlgItemText(IDC_EDIT1, temp);
+	GetDlgItemText(IDC_EDIT2, m_pwd);
+
+	// 匹配帐号密码
+	CString sql1;
+	m_id = _ttoi(temp);
+	sql1.Format("exec Login '%d','%s'", m_id, m_pwd);//存储过程
+	m_pRec = DBRecordSetGet(sql1);
+
+	_variant_t var;
+	GetCollect("cnt", var);//cnt 与你创建的存储过程里的名称对应
+	int cnt = var.intVal;
+
+	if (strlen(temp) < 1) {
+		MessageBox("请输入用户名！");
+		return;
+	}
+	if (strlen(m_pwd) < 1) {
+		MessageBox("请输入密码！");
+		return;
+	}
+
+	if (cnt == 0) {
+		MessageBox("帐号或密码错误!");
+		return;
+	}
+
+	CDialogEx::OnOK();
+	stu dlg;
+	dlg.m_pCon = m_pCon;
+	dlg.m_id = m_id;
+	dlg.DoModal();
 }
 
 
-void CCEEVFsysDlg::OnEnChangeEditName()
+void CenglishStudyDlg::OnEnChangeEdit1()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+}
+
+
+void CenglishStudyDlg::OnEnChangeEdit2()
 {
 	// TODO:  如果该控件是 RICHEDIT 控件，它将不
 	// 发送此通知，除非重写 CDialogEx::OnInitDialog()

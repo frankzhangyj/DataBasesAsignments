@@ -1,5 +1,5 @@
 ﻿
-// CEEVFsys.h: PROJECT_NAME 应用程序的主头文件
+// englishStudy.h: PROJECT_NAME 应用程序的主头文件
 //
 
 #pragma once
@@ -12,14 +12,15 @@
 #import "C:/Program Files/Common Files/System/ado/msado15.dll" no_namespace rename("EOF" , "adoEOF") rename("BOF", "adoBOF")
 
 
-// CCEEVFsysApp:
-// 有关此类的实现，请参阅 CEEVFsys.cpp
+
+// CenglishStudyApp:
+// 有关此类的实现，请参阅 englishStudy.cpp
 //
 
-class CCEEVFsysApp : public CWinApp
+class CenglishStudyApp : public CWinApp
 {
 public:
-	CCEEVFsysApp();
+	CenglishStudyApp();
 	// 连接数据库
 	_ConnectionPtr m_pCon;
 	BOOL ConnectDataBase(CString strLinkWord);
@@ -33,4 +34,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CCEEVFsysApp theApp;
+extern CenglishStudyApp theApp;

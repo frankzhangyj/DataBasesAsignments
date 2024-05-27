@@ -1,27 +1,27 @@
 ﻿
-// CEEVFsys.cpp: 定义应用程序的类行为。
+// englishStudy.cpp: 定义应用程序的类行为。
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "CEEVFsys.h"
-#include "CEEVFsysDlg.h"
+#include "englishStudy.h"
+#include "englishStudyDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CCEEVFsysApp
+// CenglishStudyApp
 
-BEGIN_MESSAGE_MAP(CCEEVFsysApp, CWinApp)
+BEGIN_MESSAGE_MAP(CenglishStudyApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// CCEEVFsysApp 构造
+// CenglishStudyApp 构造
 
-CCEEVFsysApp::CCEEVFsysApp()
+CenglishStudyApp::CenglishStudyApp()
 {
 	// 支持重新启动管理器
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
@@ -31,14 +31,14 @@ CCEEVFsysApp::CCEEVFsysApp()
 }
 
 
-// 唯一的 CCEEVFsysApp 对象
+// 唯一的 CenglishStudyApp 对象
 
-CCEEVFsysApp theApp;
+CenglishStudyApp theApp;
 
 
-// CCEEVFsysApp 初始化
+// CenglishStudyApp 初始化
 
-BOOL CCEEVFsysApp::InitInstance()
+BOOL CenglishStudyApp::InitInstance()
 {
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
@@ -71,15 +71,13 @@ BOOL CCEEVFsysApp::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 
-	// 连接数据库
-	CString strLinkWord = "Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=studentDataBase;Data Source=LAPTOP-UN7O0L73";
+	CString strLinkWord = (CString)"Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=studyDataBase;Data Source=LAPTOP-UN7O0L73";
 	if (!ConnectDataBase(strLinkWord))
 	{
 		return FALSE;
 	}
-		
-	// 创建窗口对象
-	CCEEVFsysDlg dlg;
+
+	CenglishStudyDlg dlg;
 	dlg.m_pCon = m_pCon;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
@@ -115,7 +113,7 @@ BOOL CCEEVFsysApp::InitInstance()
 }
 
 // 连接数据库函数
-BOOL CCEEVFsysApp::ConnectDataBase(CString strLinkWord)
+BOOL CenglishStudyApp::ConnectDataBase(CString strLinkWord)
 {
 	// TODO: 在此处添加实现代码.
 	::CoInitialize(NULL);
@@ -133,7 +131,7 @@ BOOL CCEEVFsysApp::ConnectDataBase(CString strLinkWord)
 	catch (_com_error& e)
 	{
 		CString str;
-		str.Format("%s\n", e.ErrorMessage());
+		str.Format((CString)"%s\n", e.ErrorMessage());
 		AfxMessageBox(str);
 		return FALSE;
 	}
